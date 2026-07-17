@@ -2,8 +2,14 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  // ملاحظة: إذا كنت تستخدم محاكي أندرويد حقيقي، استبدل localhost بـ 10.0.2.2
-  static const baseUrl = 'http://localhost:3000/api';
+  // Base URL for the backend API.
+  // - Emulator default: 10.0.2.2
+  // - Real device: pass --dart-define=API_BASE_URL=http://<PC_IP>:3000/api
+  static const baseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'http://10.0.2.2:3000/api',
+  );
+
 
   static Future<Map<String, dynamic>> login(String phone, String password) async {
     try {

@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Colors.blue,
       body: Center(
         child: Column(
-          mainAxisAlignment: Main.....center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.handyman_rounded, size: 80, color: Colors.white),
             SizedBox(height: 16),
