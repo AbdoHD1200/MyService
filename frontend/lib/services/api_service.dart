@@ -2,16 +2,18 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  // Base URL for the backend API.
-  // - Emulator default: 10.0.2.2
-  // - Real device: pass --dart-define=API_BASE_URL=http://<PC_IP>:3000/api
   static const baseUrl = String.fromEnvironment(
     'API_BASE_URL',
     defaultValue: 'http://10.0.2.2:3000/api',
   );
 
 
+
+
+
+
   static Future<Map<String, dynamic>> login(String phone, String password) async {
+
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/auth/login'),

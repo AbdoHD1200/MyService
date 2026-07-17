@@ -3,9 +3,9 @@
   command = "flutter build web --release --dart-define=API_BASE_URL=https://myservice13.netlify.app/api"
   publish = "build/web"
 
-# SPA fallback so Flutter web routing works.
 [[redirects]]
   from = "/*"
+
   to = "/index.html"
   status = 200
   force = true
