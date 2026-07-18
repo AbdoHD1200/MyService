@@ -2,10 +2,24 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
+  // IMPORTANT:
+  // When hosting Flutter web on a VM (or inside Docker), `localhost` refers to the browser/container,
+  // not the backend container. Provide API_BASE_URL at build time.
+  // Example:
+  //   flutter build web --release --dart-define=API_BASE_URL=http://<vm-ip>:5000
   static const baseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'http://10.0.2.2:3000/api',
+    defaultValue: '',
   );
+
+  static Uri _baseUri() {
+    final url = baseUrl.trim();
+    if (url.isEmpty) {
+      throw StateError('API_BASE_URL is not set. Build with --dart-define=API_BASE_URL=http://<vm-ip>:5000');
+    }
+    return Uri.parse(url);
+  }
+
 
 
 
@@ -16,7 +30,8 @@ class ApiService {
 
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/auth/login'),
+        _baseUri().resolve('/api/auth/login'),
+
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'phone': phone, 'password': password}),
       );
@@ -34,7 +49,7 @@ class ApiService {
   }) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/auth/register'),
+        _baseUri().resolve('/api/auth/register'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'fullName': fullName,
@@ -56,7 +71,8 @@ class ApiService {
   ) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/orders'),
+        _baseUri().resolve('/api/orders'),
+
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -76,7 +92,8 @@ class ApiService {
   static Future<Map<String, dynamic>> getOrders(String token) async {
     try {
       final response = await http.get(
-        Uri.parse('$baseUrl/orders'),
+        _baseUri().resolve('/api/orders'),
+
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',

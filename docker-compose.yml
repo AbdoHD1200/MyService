@@ -15,3 +15,19 @@ services:
       - ./backend:/usr/src/app         # Mounts source code for hot-reloading
       - /usr/src/app/node_modules      # Anonymous volume protects container's node_modules
     restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        # Flutter web needs API_BASE_URL at BUILD time.
+        # Set this to the backend URL as reachable from the browser.
+        # Example: http://<vm-ip>:5000
+        API_BASE_URL: ${API_BASE_URL:-http://127.0.0.1:5000}
+    container_name: anas_cms_frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: always
